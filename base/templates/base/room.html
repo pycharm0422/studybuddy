@@ -1,0 +1,35 @@
+<style>
+  .home-container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+  }
+</style>
+{{room.name}}
+
+<div class="home-container">
+
+  <div>
+    <p>{{room.description}}</p>
+    <p>Converstions</p>
+
+    {% for message in room_messages %}
+    <hr />
+    @{{message.user}}, {{message.created|timesince}} ago <br /><br />
+    {{message.body}} {% endfor %}
+
+
+    <div>
+        {% for participant in participants %}
+          <h4>@{{participant}}</h4>
+        {% endfor %}
+        
+   
+    </div>
+    <div class="comment-form">
+      <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="body" placeholder="write message here ..." />
+      </form>
+    </div>
+  </div>
+</div>
