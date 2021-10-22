@@ -13,6 +13,8 @@ urlpatterns = [
     path('delete-message/<str:pk>/', views.delete_message, name='delete-message'),
     path('login/', auth_views.LoginView.as_view(template_name = 'base/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name = 'base/logout.html'), name='logout'),
+    path('user-profile/<str:pk>/', views.user_profile, name='user-profile'),
+    path('delete-room/<str:pk>/', views.delete_room, name='delete-room'),
 
 
 ]

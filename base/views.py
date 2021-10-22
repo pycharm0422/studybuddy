@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Room, Topic, Message
-from .forms import RoomForm
+from .forms import RoomForm, MyUserCreationForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
@@ -113,19 +113,29 @@ def delete_message(request, pk):
     message = Message.objects.get(id=pk)
     if request.user != message.user:
         return HttpResponse("You are not authorized user ")
-    if(request.method == 'POST'):
-        message.delete()
-        return redirect('Home-Page')
+    # if(request.method == 'POST'):
+    message.delete()
+        # return redirect('Home-Page')
+    return redirect('Home-Page')
 # --------------------------------- < /DELETE MESSAGE > -----------------------------------------
 
 
 
-def userProfile(request, pk):
+def user_profile(request, pk):
     user = User.objects.get(id=pk)
-    rooms = user.room_set.all()
+    room = user.room_set.all()
     room_messages = user.message_set.all()
     topics = Topic.objects.all()
-    context = {'user': user, 'rooms': rooms,
-               'room_messages': room_messages, 'topics': topics}
-    return render(request, 'base/profile.html', context)
+    context = {
+        'user':user,
+        'room':room,
+        'room_messages':room_messages,
+        'topics':topics,
+    }
+    return render(request, 'base/user_profile.html', context)
 
+def delete_room(request, pk):
+    room = Room.objects.get(id=pk)
+    room.delete()
+
+    return redirect('Home-Page')
